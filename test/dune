@@ -1,0 +1,7 @@
+(executable
+ (name test_mongo)
+ (libraries mongo))
+
+(alias
+ (name runtest)
+ (action (run ./test_mongo.exe)))

@@ -1,8 +1,8 @@
 open MongoUtils;;
 
-type t = 
+type t =
     {
-      message_len: int32; 
+      message_len: int32;
       request_id: int32;
       response_to: int32;
       op: MongoOperation.t
@@ -41,7 +41,7 @@ let decode_header str =
   let (message_len, next) = decode_int32 str 0 in
   let (request_id, next) = decode_int32 str next in
   let (response_to, next) = decode_int32 str next in
-  let (op_code, next) = decode_int32 str next in
+  let (op_code, _next) = decode_int32 str next in
   {
     message_len = message_len;
     request_id = request_id;
@@ -49,7 +49,7 @@ let decode_header str =
     op = (MongoOperation.of_code op_code)
   };;
 
-let to_string h = 
+let to_string h =
   let buf = Buffer.create 64 in
   Buffer.add_string buf "message_len = ";
   Buffer.add_string buf (Int32.to_string h.message_len);

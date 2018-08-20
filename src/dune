@@ -1,0 +1,5 @@
+(library
+  (name mongo)
+  (public_name mongo)
+  (wrapped false)
+  (libraries bson unix))

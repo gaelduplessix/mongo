@@ -1,41 +1,23 @@
-SETUP = ocaml setup.ml
+build:
+	dune build
 
-build: setup.data
-	$(SETUP) -build $(BUILDFLAGS)
+test:
+	dune runtest
 
-lwt: setup.data.lwt
-	$(SETUP) -build $(BUILDFLAGS)
-
-test: setup.data build
-	ocamlbuild -use-ocamlfind -I src test/test_mongo.native
-
-doc: setup.data build
+doc: build
 	ocaml setup.ml -doc
 	cp -r _build/src/mongo.docdir/ doc
 	cp -r _build/lwt/mongo_lwt.docdir/ doc_lwt
 
-all:
-	$(SETUP) -all $(ALLFLAGS)
+all: build
 
-install: setup.data
-	$(SETUP) -install $(INSTALLFLAGS)
+install:
+	dune install
 
 uninstall: setup.data
-	$(SETUP) -uninstall $(UNINSTALLFLAGS)
-
-reinstall: setup.data
-	$(SETUP) -reinstall $(REINSTALLFLAGS)
+	dune uninstall
 
 clean:
-	$(SETUP) -clean $(CLEANFLAGS)
+	dune clean
 
-distclean:
-	$(SETUP) -distclean $(DISTCLEANFLAGS)
-
-setup.data:
-	$(SETUP) -configure $(CONFIGUREFLAGS)
-
-setup.data.lwt:
-	$(SETUP) -configure --enable-lwt $(CONFIGUREFLAGS)
-
-.PHONY: build doc test all install uninstall reinstall clean distclean configure
+.PHONY: build doc test all install uninstall clean

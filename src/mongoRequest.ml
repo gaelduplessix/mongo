@@ -3,7 +3,7 @@ open MongoOperation;;
 open MongoHeader;;
 open Bson;;
 
-let combine_header_body request_id op body_buf = 
+let combine_header_body request_id op body_buf =
   let body_len = Buffer.length body_buf in
   let whole_buf = Buffer.create (4*4+body_len) in
   let header_str = encode_header (create_request_header body_len request_id op) in
@@ -17,14 +17,14 @@ let create_insert (db_name,collection_name) (request_id,flags) insert_doc_list =
   encode_cstring body_buf (db_name^"."^collection_name);
   let rec add_doc = function
     | [] -> ()
-    | hd::tl -> 
+    | hd::tl ->
       Buffer.add_string body_buf (encode hd);
       add_doc tl
   in
   add_doc insert_doc_list;
   combine_header_body request_id OP_INSERT body_buf;;
 
-let create_select_body_buf (db_name,collection_name) (request_id,flags) selector_doc =
+let create_select_body_buf (db_name,collection_name) (_request_id,flags) selector_doc =
   let body_buf = Buffer.create 32 in
   encode_int32 body_buf 0l;
   encode_cstring body_buf (db_name^"."^collection_name);
@@ -66,13 +66,13 @@ let create_kill_cursors request_id cursor_list =
   let cursor_buf = Buffer.create 12 in
   let rec create_cursor_buf num = function
     | [] -> num
-    | hd::tl -> 
+    | hd::tl ->
       encode_int64 cursor_buf hd;
       create_cursor_buf (num+1) tl
-  in 
+  in
   let num = create_cursor_buf 0 cursor_list in
   encode_int32 body_buf (Int32.of_int num);
   Buffer.add_buffer body_buf cursor_buf;
   combine_header_body request_id OP_KILL_CURSORS body_buf;;
 
-  
+

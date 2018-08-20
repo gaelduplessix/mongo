@@ -29,7 +29,7 @@ let wrap_bson f arg =
     | Bson.Malformed_bson -> raise (Mongo_failed "Malformed_bson when decoding bson");;
 
 let wrap_unix_lwt f arg =
-  try_lwt (f arg) with
+  try%lwt (f arg) with
     | Unix.Unix_error (e, _, _) -> raise (Mongo_failed (Unix.error_message e));;
 
 let connect_to (ip,port) =
@@ -60,7 +60,7 @@ let destroy m =
   let close () =
     Lwt_pool.use m.channel_pool (
       fun (i,o) ->
-        lwt _ = wrap_unix_lwt Lwt_io.close i in
+        let%lwt _ = wrap_unix_lwt Lwt_io.close i in
         wrap_unix_lwt Lwt_io.close o
     )
     (* let i,o = m.channels in *)
@@ -118,7 +118,7 @@ let count ?skip ?limit ?(query=Bson.empty) m =
   in
 
   let m = change_collection m "$cmd" in
-  lwt r = find_q_one m c_bson in
+  let%lwt r = find_q_one m c_bson in
   let d = List.nth (MongoReply.get_document_list r) 0 in
   Lwt.return (int_of_float (Bson.get_double (Bson.get_element "n" d)))
 

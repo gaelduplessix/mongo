@@ -1,0 +1,16 @@
+opam-version: "1.2"
+name: "mongo"
+version: "0.67.2"
+maintainer: "Marc Simon <marc.simon42@gmail.com> <twitter.com/marcsimon42>"
+authors: [ "Marc Simon <marc.simon42@gmail.com> <twitter.com/marcsimon42>"
+           "Dr. Xinuo Chen <iamindcs@gmail.com>" ]
+license: "MIT"
+build: [
+  ["dune" "build" "-p" name "-j" jobs]
+]
+build-test: [
+  ["dune" "runtest"  "-p" name "-j" jobs]
+]
+depends: [
+  "bson"
+]

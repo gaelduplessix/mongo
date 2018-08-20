@@ -1,0 +1,7 @@
+(library
+  (name mongo_lwt)
+  (public_name mongo-lwt)
+  (wrapped false)
+  (preprocess
+    (pps lwt_ppx))
+  (libraries mongo bson lwt lwt_ppx))

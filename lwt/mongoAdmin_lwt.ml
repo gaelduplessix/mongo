@@ -25,7 +25,7 @@ let wrap_bson f arg =
     | Bson.Malformed_bson -> raise (MongoAdmin_failed "Malformed_bson when decoding bson");;
 
 let wrap_unix_lwt f arg =
-  try_lwt (f arg) with
+  try%lwt (f arg) with
     | Unix.Unix_error (e, _, _) -> raise (MongoAdmin_failed (Unix.error_message e));;
 
 let create ?max_connection ip port = Mongo_lwt.create ?max_connection ip port admin_db_name admin_collection_name;;
