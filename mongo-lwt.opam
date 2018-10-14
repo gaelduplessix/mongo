@@ -1,5 +1,5 @@
 opam-version: "1.2"
-name: "mongo"
+name: "mongo-lwt"
 version: "0.67.2"
 maintainer: "Marc Simon <marc.simon42@gmail.com> <twitter.com/marcsimon42>"
 authors: [ "Marc Simon <marc.simon42@gmail.com> <twitter.com/marcsimon42>"
@@ -12,6 +12,8 @@ build-test: [
   ["dune" "runtest"  "-p" name "-j" jobs]
 ]
 depends: [
+  "mongo"
   "bson"
   "lwt"
+  "lwt_ppx"
 ]

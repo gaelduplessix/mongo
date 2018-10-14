@@ -4,4 +4,4 @@
   (wrapped false)
   (preprocess
     (pps lwt_ppx))
-  (libraries mongo bson lwt lwt_ppx))
+  (libraries mongo bson lwt lwt.unix lwt_ppx))
